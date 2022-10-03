@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
@@ -15,7 +18,8 @@
         "livewire/livewire": "^2.10",
         "lucasdotvin/laravel-soulbscription": "^2.2",
         "maatwebsite/excel": "^3.1",
-        "psr/simple-cache": "^1.0"
+        "psr/simple-cache": "^1.0",
+        "dorkden/laravel-payway": "dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
@@ -28,6 +32,12 @@
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../laravel-payway"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",

@@ -15,4 +15,11 @@ class CreateTasksTable extends Migration
             $table->softDeletes();
         });
     }
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tasks');
+    }
 }

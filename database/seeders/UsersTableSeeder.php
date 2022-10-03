@@ -12,17 +12,26 @@ class UsersTableSeeder extends Seeder
     {
         $users = [
             [
-                'id'             => 1,
-                'name'           => 'Admin',
-                'email'          => 'admin@admin.com',
-                'password'       => bcrypt('password'),
+                'id' => 1,
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password'),
                 'remember_token' => null,
-                'locale'         => '',
+                'locale' => '',
+            ],
+            [
+                'id' => 2,
+                'name' => 'User',
+                'email' => 'user@user.com',
+                'password' => bcrypt('password'),
+                'remember_token' => null,
+                'locale' => '',
             ],
         ];
 
         User::insert($users);
 
         User::find(1)->subscribeTo(Plan::where('name', 'Trial')->first());
+        User::find(2)->subscribeTo(Plan::where('name', 'Trial')->first());
     }
 }

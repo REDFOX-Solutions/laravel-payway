@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -29,7 +30,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     // Task
     Route::resource('tasks', TaskController::class, ['except' => ['store', 'update', 'destroy']]);
 
-    Route::resource('plan', PlanController::class, ['except' => ['create', 'show', 'store']]);
+    Route::resource('plan', PlanController::class, ['except' => ['create', 'show', 'store', 'edit']]);
+
+    Route::get('plan/success', [PlanController::class, 'success'])->name('plan.success');
+
+    Route::resource('card', CardController::class, ['except' => ['create', 'show', 'store']]);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

@@ -95,66 +95,29 @@
 
                                 <!-- Button -->
                                 <div class="flex-shrink-0 pt-4">
-                                    <form method="POST" x-bind:action="billPlan == 'monthly' ? plan.route.monthly : plan.route.annually">
-                                        @csrf
-                                        @method('PUT')
-
-                                        <button
-                                            class="inline-flex items-center justify-center w-full max-w-xs px-4 py-2 transition-colors border rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                            :class="plan.name == 'Gold' ? 'bg-indigo-500 text-white hover:bg-indigo-700' : 'hover:bg-indigo-500 hover:text-white'"
-                                            x-text="`Get ${plan.name}`"
-                                        ></button>
-                                    </form>
+                                    <button
+                                        class="inline-flex items-center justify-center w-full max-w-xs px-4 py-2 transition-colors border rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        :class="plan.name == 'Gold' ? 'bg-indigo-500 text-white hover:bg-indigo-700' : 'hover:bg-indigo-500 hover:text-white'"
+                                        x-text="`Get ${plan.name}`"
+                                        @click="checkout(plan, billPlan)"
+                                    ></button>
                                 </div>
                             </section>
                         </template>
                     </div>
                 </div>
-
-
-                {{--<div>Silver | Gold</div>
-                <div class="flex space-x-0.5">
-                    <form method="POST" action="{{ route('admin.plan.update', 1) }}">
-                        @csrf
-                        @method('PUT')
-
-                        [<button class="hover:underline">Go monthly for $9.99/month</button>]
-                    </form>
-
-                    <div>|</div>
-
-                    <form method="POST" action="{{ route('admin.plan.update', 3) }}">
-                        @csrf
-                        @method('PUT')
-
-                        [<button class="hover:underline">Go monthly for $19.99</button>]
-                    </form>
-                </div>
-
-                <div class="flex space-x-0.5">
-                    <form method="POST" action="{{ route('admin.plan.update', 2) }}">
-                        @csrf
-                        @method('PUT')
-
-                        [<button class="hover:underline">Go yearly for $99.99/year</button>]
-                    </form>
-
-                    <div>|</div>
-
-                    <form method="POST" action="{{ route('admin.plan.update', 4) }}">
-                        @csrf
-                        @method('PUT')
-
-                        [<button class="hover:underline">Go yearly for $199.99</button>]
-                    </form>
-                </div>--}}
             </div>
         </div>
     </div>
 
+    @livewire('plan-checkout' )
+
+
+
 @endsection
 
 @push('scripts')
+    <script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
     <script>
         const setup = () => {
             return {
@@ -162,9 +125,9 @@
 
                 plans: [
                     {
-                        route: {
-                            monthly: '{{ route('admin.plan.update', 1) }}',
-                            annually: '{{ route('admin.plan.update', 2) }}',
+                        id: {
+                            monthly: 1,
+                            annually: 2,
                         },
                         name: 'Silver',
                         price: {
@@ -174,9 +137,9 @@
                         features: ['10 tasks'],
                     },
                     {
-                        route: {
-                            monthly: '{{ route('admin.plan.update', 3) }}',
-                            annually: '{{ route('admin.plan.update', 4) }}',
+                        id: {
+                            monthly: 3,
+                            annually: 4,
                         },
                         name: 'Gold',
                         price: {
@@ -188,5 +151,17 @@
                 ],
             }
         }
+
+        function checkout(plan, billPlan) {
+
+            const planId = billPlan === 'monthly' ? plan.id.monthly : plan.id.annually;
+            const amount = billPlan === 'monthly' ? plan.price.monthly : plan.price.annually;
+
+            window.livewire.emit('checkout', planId, amount);
+            setTimeout(function () {
+                AbaPayway.checkout();
+            }, 1000)
+        }
+
     </script>
 @endpush
